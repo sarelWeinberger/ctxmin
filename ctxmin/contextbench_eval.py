@@ -425,6 +425,7 @@ def _run_instance(
             use_mmr=retrieval_config.use_mmr,
             mmr_lambda=retrieval_config.mmr_lambda,
             mmr_top_k=retrieval_config.mmr_top_k,
+            min_score=retrieval_config.min_score,
         )
     profile.incr("number_of_selected_chunks", len(pack.chunks))
     profile.incr("selected_chunk_count", len(pack.chunks))

@@ -99,6 +99,7 @@ def pack_context(
     use_mmr: bool = True,
     mmr_lambda: float = 0.35,
     mmr_top_k: int = 80,
+    min_score: float = 0.22,
 ) -> PackResult:
     critical_budget = _critical_sections_tokens(analysis) + 180
     result = PackResult(
@@ -113,6 +114,9 @@ def pack_context(
         chunk = ranked.chunk
         needed = chunk.token_estimate + _chunk_overhead(ranked)
         explicit = _explicit_match(analysis, ranked)
+        if ranked.score < min_score and not explicit:
+            result.omitted_chunks += 1
+            continue
         if used + needed <= budget or (explicit and used + needed <= budget + 300):
             result.chunks.append(PackedChunk(ranked=ranked, included_tokens=needed))
             used += needed

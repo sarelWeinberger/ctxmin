@@ -125,6 +125,7 @@ class RetrievalConfig:
     rerank_top_k: int = 80
     mmr_top_k: int = 80
     mmr_lambda: float = 0.35
+    min_score: float = 0.22
     use_dense: bool = True
     use_lexical: bool = True
     use_reranker: bool = True
