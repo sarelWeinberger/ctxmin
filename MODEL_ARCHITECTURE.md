@@ -72,11 +72,30 @@ backend exists for smoke tests and offline unit tests; it is not the intended
 production retriever.
 
 ## End-to-End Data Flow
+env:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -e ".[embeddings,bench,dev]"
+   ctxmin bench-contextbench --mode distractor --dataset default --limit 10 --budget 6000 --profile
+   ``` 
 
 1. The user runs a command such as:
 
    ```bash
    ctxmin minimize "fix the failing contextbench distractor benchmark" --repo . --budget 6000
+   ```
+   
+   example: 
+    ```bash
+   python3 -m ctxmin.cli bench-contextbench --mode distractor --dataset default --limit 10 --budget 6000 --profile
+   
+   python3 -m ctxmin.cli minimize "Summarize the cache flow in this repository. Focus on indexing, embedding cache reuse, invalidation, cache keys, and where cached embeddings are loaded/stored. Also explain the optimizer/runtime bottlenecks from profiling output." --repo /home/sarel/contextrducing/ctxmin --budget 6000
+
+   unset CTXMIN_EMBEDDING_BACKEND
+   python3 -m ctxmin.cli index /home/sarel/contextrducing/ctxmin
+   python3 -m ctxmin.cli minimize "Summarize the cache flow in this repository. Focus on indexing, embedding cache reuse, invalidation, cache keys, and where cached embeddings are loaded/stored. Also explain the optimizer/runtime bottlenecks from profiling output." --repo /home/sarel/contextrducing/ctxmin --budget 6000
+
    ```
 
 2. `prompt_analyzer.py` extracts deterministic signals from the prompt:
