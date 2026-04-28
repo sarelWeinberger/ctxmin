@@ -33,6 +33,8 @@ PENALIZED_PATH_PARTS = {
     ".venv",
     "venv",
     "__pycache__",
+    "distractors",
+    "distractor",
 }
 
 
@@ -96,7 +98,7 @@ def _symbol_overlap(analysis: PromptAnalysis, chunk: Chunk) -> float:
         if chunk.symbol_name and symbol.lower() == chunk.symbol_name.lower():
             score = max(score, 1.0)
         elif re.search(rf"\b{re.escape(symbol)}\b", chunk.text):
-            score = max(score, 0.75)
+            score = max(score, 0.25)
     return score
 
 
@@ -138,6 +140,8 @@ def generated_vendor_penalty(file_path: str) -> float:
     lower = file_path.lower()
     parts = set(Path(lower).parts)
     if parts & PENALIZED_PATH_PARTS:
+        return 1.0
+    if "distractor" in lower or "_candidate" in lower or lower.endswith("_v2.py") or "_v2." in lower:
         return 1.0
     if lower.endswith((".min.js", ".bundle.js")) or "lock" in Path(lower).name:
         return 0.8

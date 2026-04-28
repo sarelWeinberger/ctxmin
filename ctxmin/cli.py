@@ -43,7 +43,7 @@ def _retrieval_config_from_args(args: argparse.Namespace) -> RetrievalConfig:
         rerank_top_k=getattr(args, "rerank_top_k", 80),
         mmr_top_k=getattr(args, "mmr_top_k", 80),
         mmr_lambda=getattr(args, "mmr_lambda", 0.35),
-        min_score=getattr(args, "min_score", 0.22),
+        min_score=getattr(args, "min_score", 0.0),
         use_mmr=not getattr(args, "no_mmr", False),
         graph_boost=bool(getattr(args, "graph_boost", False)) and not getattr(args, "disable_graph_boost", False),
         graph_expand_budget=getattr(args, "graph_expand_budget", 1000),
@@ -68,7 +68,7 @@ def _build_pack(prompt: str, repo: str, budget: int, retrieval_config: Retrieval
                 use_mmr=retrieval_config.use_mmr if retrieval_config else True,
                 mmr_lambda=retrieval_config.mmr_lambda if retrieval_config else 0.35,
                 mmr_top_k=retrieval_config.mmr_top_k if retrieval_config else 80,
-                min_score=retrieval_config.min_score if retrieval_config else 0.22,
+                min_score=retrieval_config.min_score if retrieval_config else 0.0,
             )
     return pack_context(analysis, ranked, budget=budget)
 
@@ -131,7 +131,7 @@ def _add_retrieval_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--rerank-top-k", type=int, default=80)
     parser.add_argument("--mmr-top-k", type=int, default=80)
     parser.add_argument("--mmr-lambda", type=float, default=0.35)
-    parser.add_argument("--min-score", type=float, default=0.22)
+    parser.add_argument("--min-score", type=float, default=0.0)
     parser.add_argument("--no-mmr", action="store_true")
     parser.add_argument("--graph-boost", action="store_true")
     parser.add_argument("--disable-graph-boost", action="store_true")

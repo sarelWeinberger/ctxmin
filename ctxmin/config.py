@@ -114,7 +114,7 @@ class RankingWeights:
     config_relevance: float = 0.03
     redundancy_penalty: float = 0.12
     low_signal_penalty: float = 0.10
-    generated_vendor_penalty: float = 0.22
+    generated_vendor_penalty: float = 0.45
 
 
 @dataclass(frozen=True)
@@ -125,7 +125,7 @@ class RetrievalConfig:
     rerank_top_k: int = 80
     mmr_top_k: int = 80
     mmr_lambda: float = 0.35
-    min_score: float = 0.22
+    min_score: float = 0.0
     use_dense: bool = True
     use_lexical: bool = True
     use_reranker: bool = True
